@@ -87,6 +87,8 @@ Adafruit_SSD1306 OLED(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup() {
 
+    Serial.println("Initializing...");
+
     // Initialize OLED Screen and show boot screen
     Serial.begin(9600);
     if (!OLED.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS)) {
@@ -115,6 +117,8 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(vssPin), distanceCount, FALLING);
 
     interrupts();
+
+    Serial.println("Initialize successful.");
 
     delay(10000);
 
