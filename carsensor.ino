@@ -113,8 +113,8 @@ void setup() {
     TCNT1 = 3036;
 
     // Initialize VSS Pin
-    pinMode(vssPin, INPUT);
-    attachInterrupt(digitalPinToInterrupt(vssPin), distanceCount, FALLING);
+    pinMode(vssPin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(vssPin), distanceCount, RISING);
 
     interrupts();
 
@@ -127,7 +127,7 @@ void setup() {
 void loop() {
 
     // displayValues(OLED);
-    if (millis() % 100 == 0)
+    if (millis() % 500 == 0)
         vssDebug(OLED);
 
 }
@@ -179,4 +179,5 @@ void vssDebug(Adafruit_SSD1306 screen) {
 
 void distanceCount() {
     distance_pulse_count++;
+    // Serial.println("distance_pulse_count++");
 }
