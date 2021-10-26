@@ -13,12 +13,12 @@
 const unsigned int vssPin = 2;
 
 volatile unsigned long counter = 0;
-volatile unsigned long distance_pulse_count = 0;
+volatile unsigned long distance_pulse_count = 0; // km per second
 
-volatile double traveled_distance = 0; // km
+volatile double travelled_distance = 0; // km
 volatile unsigned int current_speed = 0; // km per hour
 
-volatile static unsigned long pulse_distance = 0.00009810883055; // km per pulse
+volatile static double pulse_distance = 0.00009810883055; // km per pulse
 
 // Splash screen
 const unsigned char bootScreenBitmap [] PROGMEM = {
@@ -131,9 +131,8 @@ void setup() {
 
 void loop() {
 
-    // displayValues(OLED);
     if (millis() % 500 == 0)
-        vssDebug(OLED);
+        displaySpeed(OLED);
 
 }
 
@@ -141,14 +140,14 @@ ISR(TIMER1_OVF_vect) {
     counter++;
     // 1 second = 4 counters
     if (counter > 3) {
-        currentSpeed();
-        distance_pulse_count = 0; // km per second
+        getCurrentSpeed();
+        distance_pulse_count = 0;
         counter = 0;
     }
     TCNT1 = 3036;
 }
 
-void displayValues(Adafruit_SSD1306 screen) {
+void displaySpeed(Adafruit_SSD1306 screen) {
 
     screen.clearDisplay();
     screen.setTextColor(WHITE, BLACK);
@@ -161,9 +160,9 @@ void displayValues(Adafruit_SSD1306 screen) {
     screen.setTextSize(6); // height: 42 pixels
     screen.print(current_speed);
 
-    screen.setCursor(72, 47); 
-    screen.setTextSize(2);
-    screen.print("km/L");
+    // screen.setCursor(76, 47);
+    // screen.setTextSize(2);
+    // screen.print("kph");
 
     screen.display();
 
@@ -171,27 +170,9 @@ void displayValues(Adafruit_SSD1306 screen) {
 
 void distanceCount() {
     distance_pulse_count++;
-    traveled_distance += current_speed;
-    // Serial.println("distance_pulse_count++");
+    travelled_distance += current_speed;
 }
 
-void currentSpeed() {
+void getCurrentSpeed() {
     current_speed = pulse_distance * distance_pulse_count * 3600;
-}
-
-void vssDebug(Adafruit_SSD1306 screen) {
-
-    screen.clearDisplay();
-    screen.setTextColor(WHITE, BLACK);
-
-    screen.setCursor(0, 1);
-    screen.setTextSize(2); // height: 14 pixels
-    screen.print("VSS DEBUG");
-
-    screen.setCursor(0, 19);
-    screen.setTextSize(2); // height: 14 pixels
-    screen.print(distance_pulse_count);
-
-    screen.display();
-
 }
