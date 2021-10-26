@@ -170,7 +170,7 @@ void displaySpeed(Adafruit_SSD1306 screen) {
 
 void distanceCount() {
     distance_pulse_count++;
-    travelled_distance += current_speed;
+    travelled_distance += pulse_distance;
 }
 
 void getCurrentSpeed() {
