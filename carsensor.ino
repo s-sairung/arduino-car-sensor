@@ -14,6 +14,7 @@ const unsigned int vssPin = 2;
 
 volatile unsigned long counter = 0;
 volatile unsigned long distance_pulse_count = 0; // km per second
+volatile unsigned long total_pulse_count = 0;
 
 volatile double travelled_distance = 0; // km
 volatile unsigned int current_speed = 0; // km per hour
@@ -154,7 +155,7 @@ void displayValue(Adafruit_SSD1306 screen) {
 
     screen.setCursor(0, 1);
     screen.setTextSize(2); // height: 14 pixels
-    screen.print("SPD & TRIP");
+    screen.print(total_pulse_count);
 
     screen.setCursor(0, 19);
     screen.setTextSize(2); // height: 14 pixels
@@ -191,6 +192,7 @@ void displaySpeed(Adafruit_SSD1306 screen) {
 
 void distanceCount() {
     distance_pulse_count++;
+    total_pulse_count++;
     travelled_distance += pulse_distance;
 }
 
